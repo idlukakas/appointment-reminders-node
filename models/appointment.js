@@ -14,6 +14,14 @@ const AppointmentSchema = new mongoose.Schema({
 });
 
 AppointmentSchema.methods.requiresNotification = function(date) {
+  console.log('teste');
+  console.log('This time: ' + this.time);
+  console.log('This time zone: ' + this.timeZone);
+  console.log('This date: ' + date);
+  let test = Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
+                    .diff(moment(date).utc())
+                ).asMinutes());
+  console.log(test);
   return Math.round(moment.duration(moment(this.time).tz(this.timeZone).utc()
                           .diff(moment(date).utc())
                         ).asMinutes()) === this.notification;
@@ -22,14 +30,16 @@ AppointmentSchema.methods.requiresNotification = function(date) {
 AppointmentSchema.statics.sendNotifications = function(callback) {
   // now
   const searchDate = new Date();
+  console.log(searchDate);
   Appointment
     .find()
     .then(function(appointments) {
       appointments = appointments.filter(function(appointment) {
-              return appointment.requiresNotification(searchDate);
+        return appointment.requiresNotification(searchDate);
       });
       if (appointments.length > 0) {
-        sendNotifications(appointments);
+        console.log('sending notification!!!');
+        // sendNotifications(appointments);
       }
     });
 

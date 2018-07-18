@@ -6,6 +6,7 @@ const notificationWorkerFactory = function() {
   return {
     run: function() {
       Appointment.sendNotifications();
+      console.log("sending the notificationASJDHNIKASHGIAUSHGDASUH");
     },
   };
 };
